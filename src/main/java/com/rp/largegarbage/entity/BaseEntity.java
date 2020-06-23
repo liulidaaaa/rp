@@ -3,18 +3,14 @@ package com.rp.largegarbage.entity;
 import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
 @Data
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
-    //编号
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private Long id ;
+
     //状态 0有效 1无效
     //private Integer state;
     @Column(name = "status", columnDefinition = "int(10) COMMENT '状态： 0-有效 1-无效'")
@@ -37,6 +33,7 @@ public abstract class BaseEntity implements Serializable {
      */
     @PrePersist
     public void setInsertBefore() {
+        this.status = 0;
         this.createTime = new Date();
         this.updateTime = new Date();
     }
@@ -49,4 +46,19 @@ public abstract class BaseEntity implements Serializable {
         this.updateTime = new Date();
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 }

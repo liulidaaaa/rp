@@ -19,7 +19,12 @@ import java.io.Serializable;
 //列phoneNo添加索引
 //@Table(name="EntryPerson",indexes = {@Index(columnList = "phoneNo")})
 public class EntryPerson extends BaseEntity implements Serializable {
-
+    //编号
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Long id ;
     //真实姓名
     @Column(name = "name",nullable = true,columnDefinition = "varchar(50) COMMENT '姓名'")
     private String name;
