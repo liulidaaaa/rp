@@ -113,7 +113,7 @@ public class ShiroConfig {
      */
     public RedisManager getRedisManager(){
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost("localhost");
+        redisManager.setHost("192.168.1.199");
         redisManager.setPort(6379);
         return redisManager;
     }

@@ -29,7 +29,7 @@ spring:
         max-active: 20
         max-wait: -1
     host: 192.168.1.199
-    port: 6300
+    port: 6379
     password: Runpu20191234
     timeout: 10000
   #web.upload-path=/Users/jack/Desktop

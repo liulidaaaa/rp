@@ -25,14 +25,6 @@ import java.util.Map;
 @EnableCaching
 public class RedisConfig {
 
-//    @Bean
-//    public RedisTemplate<String,String> redisTemplate(RedisConnectionFactory factory){
-//        RedisTemplate<String,String> redisTemplate = new RedisTemplate<>();
-//        redisTemplate.setConnectionFactory(factory);
-//        return redisTemplate;
-//    }
-
-
     @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory){
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<String,String>();
