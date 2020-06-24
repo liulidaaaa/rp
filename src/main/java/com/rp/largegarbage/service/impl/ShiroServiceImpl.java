@@ -1,26 +1,24 @@
 package com.rp.largegarbage.service.impl;
 
-import com.rp.largegarbage.antho.TokenGenerator;
-import com.rp.largegarbage.dao.TokenDao;
 import com.rp.largegarbage.dao.UserDao;
-import com.rp.largegarbage.entity.Token;
 import com.rp.largegarbage.entity.User;
 import com.rp.largegarbage.service.ShiroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-
+/**
+ * @Description
+ * @Author liulida <2979284403@qq.com>
+ * @Version v1.0.0
+ * @Since 1.0
+ * @Date 2020/6/23 17:45
+ */
 @Service
 public class ShiroServiceImpl implements ShiroService {
 
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private TokenDao tokenDao;
 
     //12小时后过期
     private final static int EXPIRE = 3600 * 12;
@@ -40,12 +38,12 @@ public class ShiroServiceImpl implements ShiroService {
      * 生成一个token
      *@param  userId
      *@return Result
-     */
+     *//*
     @Override
     public Map<String, Object> createToken(Integer userId) {
         Map<String, Object> result = new HashMap<>();
         //生成一个token
-        String token = TokenGenerator.generateValue();
+        String token = CustomSessionIdGenerator.generateValue();
         //当前时间
         Date now = new Date();
         //过期时间
@@ -71,25 +69,25 @@ public class ShiroServiceImpl implements ShiroService {
         result.put("expire", EXPIRE);
         return result;
 
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void logout(String token) {
         Token byToken = findByToken(token);
         //生成一个token
-        token = TokenGenerator.generateValue();
+        token = CustomSessionIdGenerator.generateId();
         //修改token
         Token tokenEntity = new Token();
         tokenEntity.setUserId(byToken.getUserId());
         tokenEntity.setToken(token);
         tokenDao.save(tokenEntity);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public Token findByToken(String accessToken) {
         return tokenDao.findByToken(accessToken);
 
-    }
+    }*/
 
     @Override
     public User findByUserId(Integer userId) {

@@ -6,7 +6,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
+/**
+ * @Description
+ * @Author liulida <2979284403@qq.com>
+ * @Version v1.0.0
+ * @Since 1.0
+ * @Date 2020/6/23 17:45
+ */
 //@Data
 @Entity
 @Table(name="permission")

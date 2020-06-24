@@ -9,7 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * @Description
+ * @Author liulida <2979284403@qq.com>
+ * @Version v1.0.0
+ * @Since 1.0
+ * @Date 2020/6/23 17:45
+ */
 public class MyExceptionHandler implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 请求数据
  */
-public interface RequestDto extends Serializable {
+public interface RequestDTO extends Serializable {
 
 
 }

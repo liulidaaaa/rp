@@ -1,16 +1,23 @@
 package com.rp.largegarbage.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-//@Data
+/**
+ * @Description
+ * @Author liulida <2979284403@qq.com>
+ * @Version v1.0.0
+ * @Since 1.0
+ * @Date 2020/6/23 17:45
+ */
 @Entity
 //列name添加索引
 @Table(name="user",indexes = {@Index(columnList = "username")})
@@ -26,6 +33,7 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "username",unique = true,nullable = false,columnDefinition = "varchar(50) COMMENT '用户昵称'")
     private String username;
     //密码
+    @JsonIgnore
     @Size(min=1,max=10,message="密码的长度应该在1和10之间")
     @Column(name = "password",nullable = false,columnDefinition = "int(127) COMMENT '密码'")
     private Integer password;
@@ -45,6 +53,8 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "gender", columnDefinition = "int(10) COMMENT '性别： 1-成功 0-失败'")
     private Integer ender;
     //联系电话
+    @JsonProperty("phoneNo")//account
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "phoneNo", columnDefinition = "int(14) COMMENT '联系电话'")
     private Integer phoneNo;
     //常用地址

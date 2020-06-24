@@ -21,3 +21,28 @@ spring:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     generate-ddl: true
+  redis:
+    jedis:
+      pool:
+        max-idle: 10
+        min-idle: 5
+        max-active: 20
+        max-wait: -1
+    host: 192.168.1.199
+    port: 6300
+    password: Runpu20191234
+    timeout: 10000
+  #web.upload-path=/Users/jack/Desktop
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/test/,file:${web.upload-path}
+  servlet:
+    multipart:
+      max-file-size: 5Mb
+      max-request-size: 10Mb
+      enabled: true
+      file-size-threshold: 0
+      location: /images
+largegabage:
+  file:
+    path: E:/rp/src/main/resources/static/upload/images
+    extension: .gif,.jpeg,.png,.jpg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf,.txt,.rar,.tif

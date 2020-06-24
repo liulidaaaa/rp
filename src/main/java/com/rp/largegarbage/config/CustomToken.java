@@ -1,7 +1,6 @@
-package com.rp.largegarbage.antho;
+package com.rp.largegarbage.config;
 
 
-import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
 /**
@@ -11,13 +10,11 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  * @Date
  * @Version 1.0
  */
-
-
-public class AuthToken extends UsernamePasswordToken {
+public class CustomToken extends UsernamePasswordToken {
 
     private String token;
 
-    public AuthToken(String token) {
+    public CustomToken(String token) {
         this.token = token;
     }
 

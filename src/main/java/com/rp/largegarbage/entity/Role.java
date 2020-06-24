@@ -8,7 +8,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * @Description
+ * @Author liulida <2979284403@qq.com>
+ * @Version v1.0.0
+ * @Since 1.0
+ * @Date 2020/6/23 17:45
+ */
 //@Data
 @Entity
 @Table(name="role")
@@ -83,4 +89,5 @@ public class Role extends BaseEntity implements Serializable {
     public void setPermissions(Set<Permission> permissions) {
         this.permissions = permissions;
     }
+
 }
