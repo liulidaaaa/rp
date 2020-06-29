@@ -29,12 +29,12 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Integer userId ;
     //用户名
-    @NotEmpty(message="用户名不能为空")
+    //@NotEmpty(message="用户名不能为空")
     @Column(name = "username",unique = true,nullable = false,columnDefinition = "varchar(50) COMMENT '用户昵称'")
     private String username;
     //密码
-    @JsonIgnore
-    @Size(min=1,max=10,message="密码的长度应该在1和10之间")
+    //@JsonIgnore
+    //@Size(min=1,max=10,message="密码的长度应该在1和10之间")
     @Column(name = "password",nullable = false,columnDefinition = "int(127) COMMENT '密码'")
     private Integer password;
     @JsonIgnoreProperties(value = { "users" })
@@ -63,6 +63,28 @@ public class User extends BaseEntity implements Serializable {
     //积分
     @Column(name = "reward_points", columnDefinition = "int(10) COMMENT '奖励积分'")
     private Integer rewardPoints;
+    //身份证号
+    //@JsonIgnore
+    //@Size(min=12,max=20,message="身份证号的长度应该在12和20之间")
+    @Column(name = "idcard", columnDefinition = "int(30) COMMENT '身份证号'")
+    private Integer idCard;
+
+    @Override
+    public String toString() {
+        return "{\"User\":"
+                + super.toString()
+                + ", \"userId\":\"" + userId + "\""
+                + ", \"username\":\"" + username + "\""
+                + ", \"password\":\"" + password + "\""
+                + ", \"roles\":" + roles
+                + ", \"realName\":\"" + realName + "\""
+                + ", \"ender\":\"" + ender + "\""
+                + ", \"phoneNo\":\"" + phoneNo + "\""
+                + ", \"address\":\"" + address + "\""
+                + ", \"rewardPoints\":\"" + rewardPoints + "\""
+                + ", \"idCard\":\"" + idCard + "\""
+                + "}";
+    }
 
     public Integer getUserId() {
         return userId;
@@ -136,18 +158,18 @@ public class User extends BaseEntity implements Serializable {
         this.rewardPoints = rewardPoints;
     }
 
-     @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
-                ", password=" + password +
-                ", roles=" + roles +
-                ", realName='" + realName + '\'' +
-                ", ender=" + ender +
-                ", phoneNo=" + phoneNo +
-                ", address='" + address + '\'' +
-                ", rewardPoints=" + rewardPoints +
-                '}';
+    public Integer getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(Integer idCard) {
+        this.idCard = idCard;
+    }
+
+    public User() {
+    }
+    public User(Integer userId, Set<Role> roles) {
+        this.userId = userId;
+        this.roles = roles;
     }
 }

@@ -1,4 +1,4 @@
-package com.rp.largegarbage.util;
+package com.rp.largegarbage.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;

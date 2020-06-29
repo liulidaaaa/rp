@@ -24,21 +24,22 @@ spring:
   redis:
     jedis:
       pool:
-        max-idle: 10
-        min-idle: 5
-        max-active: 20
+        max-idle: 100
+        min-idle: 1
+        max-active: 5000
         max-wait: -1
-    host: 192.168.1.199
+    host: 127.0.0.1
     port: 6379
-    password: Runpu20191234
+    password: root
     timeout: 10000
+    database: 0
   #web.upload-path=/Users/jack/Desktop
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/test/,file:${web.upload-path}
   servlet:
     multipart:
-      max-file-size: 5Mb
-      max-request-size: 10Mb
+      max-file-size: 5MB
+      max-request-size: 10MB
       enabled: true
       file-size-threshold: 0
       location: /images
@@ -46,3 +47,4 @@ largegabage:
   file:
     path: E:/rp/src/main/resources/static/upload/images
     extension: .gif,.jpeg,.png,.jpg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf,.txt,.rar,.tif
+port: 1502

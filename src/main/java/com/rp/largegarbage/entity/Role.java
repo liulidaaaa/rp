@@ -15,7 +15,7 @@ import java.util.Set;
  * @Since 1.0
  * @Date 2020/6/23 17:45
  */
-//@Data
+
 @Entity
 @Table(name="role")
 public class Role extends BaseEntity implements Serializable {
@@ -90,4 +90,10 @@ public class Role extends BaseEntity implements Serializable {
         this.permissions = permissions;
     }
 
+    public Role() {
+    }
+    public Role(Integer roleId,String roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+    }
 }

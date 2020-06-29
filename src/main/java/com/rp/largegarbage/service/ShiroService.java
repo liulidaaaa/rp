@@ -1,6 +1,7 @@
 package com.rp.largegarbage.service;
 
 import com.rp.largegarbage.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -24,4 +25,13 @@ public interface ShiroService {
     //Token findByToken(String accessToken);
 
     User findByUserId(Integer userId);
+
+    /**
+     * 移动端用户通过手机号登及验证短信注册并登录，返回用户及权限信息
+     */
+    public User registAndLogin(Integer phoneNo, String verificationCode, Integer IDCard);
+    /**
+     *
+     */
+    public void sendMessage(Integer phoneNo, String message);
 }

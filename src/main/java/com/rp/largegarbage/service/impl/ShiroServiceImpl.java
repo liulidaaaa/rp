@@ -94,4 +94,14 @@ public class ShiroServiceImpl implements ShiroService {
         return userDao.findByUserId(userId);
     }
 
+    @Override
+    public User registAndLogin(Integer phoneNo, String verificationCode, Integer IDCard) {
+        return null;
+    }
+
+    @Override
+    public void sendMessage(Integer phoneNo, String message) {
+
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.rp.largegarbage.config;
+package com.rp.largegarbage.shiro;
 
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.CollectionUtils;

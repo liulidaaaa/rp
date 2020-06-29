@@ -1,4 +1,4 @@
-package com.rp.largegarbage.config;
+package com.rp.largegarbage.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

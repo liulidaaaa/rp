@@ -1,35 +1,32 @@
-package com.rp.largegarbage.controller;
+package com.rp.largegarbage.util;
 
-import com.rp.largegarbage.config.GlobalProperties;
+import com.rp.largegarbage.shiro.GlobalProperties;
 import com.rp.largegarbage.dao.FileInfoDao;
 import com.rp.largegarbage.dto.ResponseDTO;
 import com.rp.largegarbage.entity.FileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Optional;
-import java.util.UUID;
 
 
 /**
- * @Description   文件上传,下载类
+ * @Description   文件上传,下载工具类
  * @Author liulida <2979284403@qq.com>
  * @Version v1.0.0
  * @Since 1.0
  * @Date 2020/6/24 15:04
  */
-@Controller
-public class FileController {
+//@Controller
+public class FileUtil {
 
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
 
 
     /**
@@ -47,7 +44,7 @@ public class FileController {
      * 文件上传页面
      * @return
      */
-    @GetMapping("/")
+    //@GetMapping("/")
     public String updatePage() {
         return "file";
     }
@@ -56,8 +53,8 @@ public class FileController {
      * @param file
      * @return
      */
-    @PostMapping("/upload")
-    @ResponseBody
+    //@PostMapping("/upload")
+    //@ResponseBody
     private ResponseDTO upload(@RequestParam("file") MultipartFile file) throws Exception {
         // 获取文件在服务器上的存储位置
         String serverPath = globalProperties.getServerPath();
@@ -126,8 +123,8 @@ public class FileController {
      * @return
      * @throws Exception
      */
-    @PostMapping("/batchUpload")
-    @ResponseBody
+    //@PostMapping("/batchUpload")
+    //@ResponseBody
     public ResponseDTO batchUpload(@RequestParam("files") MultipartFile[] files) throws Exception {
         if (files == null) {
             return new ResponseDTO(-1, "参数为空 ", null);
@@ -147,8 +144,8 @@ public class FileController {
      * @param response
      * @return
      */
-    @PostMapping("/download")
-    @ResponseBody
+    //@PostMapping("/download")
+    //@ResponseBody
     public ResponseDTO downloadFile(@RequestParam("fileId") Integer fileId, HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("文件ID为：" + fileId);
         // 判断传入参数是否非空

@@ -1,4 +1,4 @@
-package com.rp.largegarbage.config;
+package com.rp.largegarbage.shiro;
 
 
 import org.apache.shiro.authc.UsernamePasswordToken;

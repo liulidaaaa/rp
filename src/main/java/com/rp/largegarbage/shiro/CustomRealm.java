@@ -1,4 +1,4 @@
-package com.rp.largegarbage.config;
+package com.rp.largegarbage.shiro;
 
 import com.rp.largegarbage.entity.Permission;
 import com.rp.largegarbage.entity.Role;

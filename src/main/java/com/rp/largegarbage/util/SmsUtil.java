@@ -1,4 +1,4 @@
-package com.rp.largegarbage.controller;
+package com.rp.largegarbage.util;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
@@ -20,15 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @Since 1.0
  * @Date 2020/6/24 17:11
  */
-@RestController
-public class SmsController {
+//@RestController
+public class SmsUtil {
     //显示页面
-    @RequestMapping("/mt")
+    //@RequestMapping("/mt")
     private String ui() {
         return "mtlogin";//返回页面
     }
 
-    @RequestMapping("/ajaxNum")
+    //@RequestMapping("/ajaxNum")
     public String sendMsg(String phoneNum) throws ClientException {//拿到手机号
         //调用阿里通信接口
         //设置超时时间-可自行调整

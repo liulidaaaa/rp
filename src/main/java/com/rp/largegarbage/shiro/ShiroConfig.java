@@ -1,4 +1,4 @@
-package com.rp.largegarbage.config;
+package com.rp.largegarbage.shiro;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -113,7 +113,7 @@ public class ShiroConfig {
      */
     public RedisManager getRedisManager(){
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost("192.168.1.199");
+        redisManager.setHost("127.0.0.1");
         redisManager.setPort(6379);
         return redisManager;
     }
