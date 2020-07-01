@@ -13,6 +13,9 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface UserDao extends JpaRepository<User,Integer>, JpaSpecificationExecutor<User> {
 
+    @Query(value = "select * from user u where u.phoneNo=?1", nativeQuery = true)
+    User findByPhoneNo(Integer phoneNo);
+
     @Query(value = "select * from user u where u.username=?1", nativeQuery = true)
     User findByUsername(String username);
 

@@ -49,9 +49,9 @@ public class User extends BaseEntity implements Serializable {
     //真实姓名
     @Column(name = "real_name",nullable = true,columnDefinition = "varchar(50) COMMENT '真实姓名'")
     private String realName;
-    //性别
-    @Column(name = "gender", columnDefinition = "int(10) COMMENT '性别： 1-成功 0-失败'")
-    private Integer ender;
+    //性别：  0-女 1-男
+    @Column(name = "gender", columnDefinition = "int(10) COMMENT '性别：  0-女 1-男'")
+    private Integer gender;
     //联系电话
     @JsonProperty("phoneNo")//account
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -69,6 +69,18 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "idcard", columnDefinition = "int(30) COMMENT '身份证号'")
     private Integer idCard;
 
+    //头像编号
+    @Column(name = "header_id", columnDefinition = "int(11) COMMENT '头像编号'")
+    private Integer headerId;
+
+    public Integer getHeaderId() {
+        return headerId;
+    }
+
+    public void setHeaderId(Integer headerId) {
+        this.headerId = headerId;
+    }
+
     @Override
     public String toString() {
         return "{\"User\":"
@@ -78,7 +90,7 @@ public class User extends BaseEntity implements Serializable {
                 + ", \"password\":\"" + password + "\""
                 + ", \"roles\":" + roles
                 + ", \"realName\":\"" + realName + "\""
-                + ", \"ender\":\"" + ender + "\""
+                + ", \"gender\":\"" + gender + "\""
                 + ", \"phoneNo\":\"" + phoneNo + "\""
                 + ", \"address\":\"" + address + "\""
                 + ", \"rewardPoints\":\"" + rewardPoints + "\""
@@ -126,12 +138,12 @@ public class User extends BaseEntity implements Serializable {
         this.realName = realName;
     }
 
-    public Integer getEnder() {
-        return ender;
+    public Integer getGender() {
+        return gender;
     }
 
-    public void setEnder(Integer ender) {
-        this.ender = ender;
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 
     public Integer getPhoneNo() {

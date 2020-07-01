@@ -1,24 +1,27 @@
 package com.rp.largegarbage;
 
+import com.rp.largegarbage.dao.OrderGarDao;
 import com.rp.largegarbage.dao.UserDao;
 import com.rp.largegarbage.entity.Role;
 import com.rp.largegarbage.entity.User;
 import com.rp.largegarbage.redis.RedisUtil;
+import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootTest
 class LargegarbageApplicationTests {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private OrderGarDao orderDao;
 
 	@Autowired
 	private MyClientSocket clientSocket;
@@ -29,7 +32,6 @@ class LargegarbageApplicationTests {
 	@Autowired
 	private RedisUtil redisUtil;
 
-
 	@Transactional
 	@Test
 	void testFindByUserId() {
@@ -37,14 +39,41 @@ class LargegarbageApplicationTests {
 		System.out.println(byUserId);*/
 		Set<Role> roles = new HashSet<Role>();
 		roles.add(new Role(1, "临时申请人"));
-		roles.add(new Role(2, "发齐人"));
+		roles.add(new Role(2, "发起人"));
 		userDao.save(new User(1, roles));
 	}
+	@Test
+	void testOrderGarDao() {
+		//orderDao.updateOrderStatusByOrderId(1,1);
+		/*List<Integer> ids = new ArrayList();
+		ids.add(1);
+		orderDao.deleteByIds(ids);*/
+		orderDao.deleteById(1);
+	}
 
+	@Test
+	public void testString(){
+		//集合转字符串
+		ArrayList<String> fileId = new ArrayList();
+		fileId.add("111");
+		fileId.add("222");
+		String ids = StringUtils.join(fileId, ",");
+		System.out.println(ids+"======");
+
+		//字符串转集合
+		String str="篮球,足球,排球";
+		String[] strs=str.split(",");
+		List list= Arrays.asList(strs);
+		System.out.println(list+"======");
+	}
 	@Test
 	public void testRedis() {
 		redisUtil.set("1","1");
 		System.out.println(redisUtil.get("1"));
+	}
+	@Test
+	public void testUploadFile() {
+		//ResponseDTO upload = fileUtil.upload(file);
 	}
 
 	@Test

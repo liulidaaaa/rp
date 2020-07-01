@@ -47,4 +47,3 @@ largegabage:
   file:
     path: E:/rp/src/main/resources/static/upload/images
     extension: .gif,.jpeg,.png,.jpg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf,.txt,.rar,.tif
-port: 1502

@@ -3,6 +3,8 @@ package com.rp.largegarbage.service.impl;
 import com.rp.largegarbage.dao.UserDao;
 import com.rp.largegarbage.entity.User;
 import com.rp.largegarbage.service.ShiroService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ShiroServiceImpl implements ShiroService {
+
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShiroServiceImpl.class);
 
     @Autowired
     private UserDao userDao;

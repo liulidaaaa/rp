@@ -1,32 +1,34 @@
-package com.rp.largegarbage.util;
+package com.rp.largegarbage.service.impl;
 
-import com.rp.largegarbage.shiro.GlobalProperties;
 import com.rp.largegarbage.dao.FileInfoDao;
 import com.rp.largegarbage.dto.ResponseDTO;
 import com.rp.largegarbage.entity.FileInfo;
+import com.rp.largegarbage.service.FileService;
+import com.rp.largegarbage.shiro.GlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-
 /**
- * @Description   文件上传,下载工具类
+ * @Description
  * @Author liulida <2979284403@qq.com>
  * @Version v1.0.0
  * @Since 1.0
- * @Date 2020/6/24 15:04
+ * @Date 2020/6/30 13:51
  */
-//@Controller
-public class FileUtil {
-
+@Service
+public class FileServiceImpl implements FileService {
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileServiceImpl.class);
 
 
     /**
@@ -45,17 +47,16 @@ public class FileUtil {
      * @return
      */
     //@GetMapping("/")
-    public String updatePage() {
+    /*public String updatePage() {
         return "file";
-    }
+    }*/
     /**
      * 单文件上传
      * @param file
      * @return
      */
-    //@PostMapping("/upload")
-    //@ResponseBody
-    private ResponseDTO upload(@RequestParam("file") MultipartFile file) throws Exception {
+    @Override
+    public ResponseDTO upload(MultipartFile file) throws Exception {
         // 获取文件在服务器上的存储位置
         String serverPath = globalProperties.getServerPath();
 
@@ -113,8 +114,9 @@ public class FileUtil {
 
         LOGGER.info("新增文件数据");
         // 新增文件数据
-        fileInfoDao.save(sysFileInfo);
-        return new ResponseDTO(-1, "上传成功 ", null);
+        FileInfo save = fileInfoDao.save(sysFileInfo);
+        Integer id = save.getFileId();
+        return new ResponseDTO(1,id , "上传成功 ");
     }
 
     /**
@@ -123,16 +125,17 @@ public class FileUtil {
      * @return
      * @throws Exception
      */
-    //@PostMapping("/batchUpload")
-    //@ResponseBody
-    public ResponseDTO batchUpload(@RequestParam("files") MultipartFile[] files) throws Exception {
-        if (files == null) {
+    @Override
+    public  ResponseDTO batchUpload(MultipartFile[] files) throws Exception {
+        if (null == files) {
             return new ResponseDTO(-1, "参数为空 ", null);
         }
+        List<String> ids = new ArrayList<>();
         for (MultipartFile multipartFile : files) {
-            upload(multipartFile);
+            ResponseDTO upload = upload(multipartFile);
+            ids.add((String) upload.getData());
         }
-        return new ResponseDTO(-1, "批量上传成功 ", null);
+        return new ResponseDTO(-1,ids , "批量上传成功 ");
     }
 
 
@@ -144,9 +147,8 @@ public class FileUtil {
      * @param response
      * @return
      */
-    //@PostMapping("/download")
-    //@ResponseBody
-    public ResponseDTO downloadFile(@RequestParam("fileId") Integer fileId, HttpServletRequest request, HttpServletResponse response) {
+    @Override
+    public ResponseDTO downloadFile(Integer fileId, HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("文件ID为：" + fileId);
         // 判断传入参数是否非空
         if (fileId == null) {
@@ -203,6 +205,4 @@ public class FileUtil {
         }
         return new ResponseDTO(-1, "下载失败 ", null);
     }
-
 }
-

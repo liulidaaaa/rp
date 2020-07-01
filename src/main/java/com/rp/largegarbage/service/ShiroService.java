@@ -31,7 +31,8 @@ public interface ShiroService {
      */
     public User registAndLogin(Integer phoneNo, String verificationCode, Integer IDCard);
     /**
-     *
+     * 发送短信验证码
      */
     public void sendMessage(Integer phoneNo, String message);
+
 }
