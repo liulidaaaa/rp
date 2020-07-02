@@ -1,6 +1,7 @@
 package com.rp.largegarbage;
 
 import com.rp.largegarbage.dao.OrderGarDao;
+import com.rp.largegarbage.dao.RoleDao;
 import com.rp.largegarbage.dao.UserDao;
 import com.rp.largegarbage.entity.Role;
 import com.rp.largegarbage.entity.User;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.*;
@@ -19,6 +21,9 @@ class LargegarbageApplicationTests {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private RoleDao roleDao;
 
 	@Autowired
 	private OrderGarDao orderDao;
@@ -33,6 +38,7 @@ class LargegarbageApplicationTests {
 	private RedisUtil redisUtil;
 
 	@Transactional
+	@Rollback(false)
 	@Test
 	void testFindByUserId() {
 		/*User byUserId = userDao.findByUserId(1);
@@ -49,6 +55,15 @@ class LargegarbageApplicationTests {
 		ids.add(1);
 		orderDao.deleteByIds(ids);*/
 		orderDao.deleteById(1);
+	}
+
+	@Test
+	void testRoleDao() {
+		//orderDao.updateOrderStatusByOrderId(1,1);
+		/*List<Integer> ids = new ArrayList();
+		ids.add(1);
+		orderDao.deleteByIds(ids);*/
+		System.out.println(roleDao.findByRoleName("录入人员"));
 	}
 
 	@Test

@@ -6,9 +6,12 @@ import com.rp.largegarbage.service.NoticeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description
@@ -29,13 +32,16 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public List<Notice> queryNoticeList() {
-        return null;
+        return noticeDao.findAll(Sort.by(Sort.Direction.DESC, "createTime"));
     }
 
     @Override
     public Notice queryNotice(Integer noticeId) {
-        //浏览量加一
         //查询详情
-        return null;
+        Optional<Notice> byId = noticeDao.findById(noticeId);
+        Notice notice = byId.get();
+        //浏览量加一
+        notice.setPv(notice.getPv()+1);
+        return notice;
     }
 }

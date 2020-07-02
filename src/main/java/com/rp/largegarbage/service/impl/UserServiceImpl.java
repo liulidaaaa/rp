@@ -1,8 +1,10 @@
 package com.rp.largegarbage.service.impl;
 
+import com.rp.largegarbage.dao.RoleDao;
 import com.rp.largegarbage.dao.UserDao;
 import com.rp.largegarbage.dao.UserRoleDao;
 import com.rp.largegarbage.dto.ResponseDTO;
+import com.rp.largegarbage.entity.Role;
 import com.rp.largegarbage.entity.User;
 import com.rp.largegarbage.entity.UserRole;
 import com.rp.largegarbage.service.FileService;
@@ -10,10 +12,12 @@ import com.rp.largegarbage.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @Description
@@ -30,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private RoleDao roleDao;
 
     @Autowired
     private UserRoleDao userRoleDao;
@@ -131,4 +138,10 @@ public class UserServiceImpl implements UserService {
         userDao.save(user);
         return true;
     }
+
+    @Override
+    public Role roleList(String roleName) {
+        return roleDao.findByRoleName(roleName);
+    }
+
 }

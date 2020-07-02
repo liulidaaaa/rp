@@ -1,5 +1,6 @@
 package com.rp.largegarbage.service;
 
+import com.rp.largegarbage.entity.Role;
 import com.rp.largegarbage.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
@@ -54,5 +55,11 @@ public interface UserService {
      * 更换手机号码
      */
     Boolean changePhoneNo(Integer userId, Integer phoneNoOld, Integer phoneNoNew, String verificationCode) ;
+
+    /**
+     * 各种角色列表（发起人/司机/管理员）列表
+     */
+    Role roleList(String rolename);
+
 
 }

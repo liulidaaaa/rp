@@ -2,9 +2,12 @@ package com.rp.largegarbage.controller;
 
 import com.rp.largegarbage.dto.ResponseDTO;
 import com.rp.largegarbage.dto.LoginDTO;
+import com.rp.largegarbage.service.impl.NoticeServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +26,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("pub")
 public class PublicController {
+    /**
+     * logger
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(PublicController.class);
 
     @RequestMapping("need_login")
     public ResponseDTO needLogin() {

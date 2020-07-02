@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +49,7 @@ public class OrderGarServiceImpl implements OrderGarService {
     private FileService fileService;
 
     @Override
-    public void initiatorCreateOrder(MultipartFile[] files, double lng, double lat, Integer rewardPoints, String desc, Integer initiator) throws Exception {
+    public void initiatorCreateOrder(MultipartFile[] files, double lng, double lat, String area, Integer rewardPoints, String desc, Integer initiator) throws Exception {
         //上传图片,返回集合ids
         ResponseDTO responseDTO = fileService.batchUpload(files);
         ArrayList<String> fileId = (ArrayList)responseDTO.getData();
@@ -57,6 +59,7 @@ public class OrderGarServiceImpl implements OrderGarService {
         order.setFileInfoId(ids);
         order.setLng(lng);
         order.setLat(lat);
+        order.setArea(area);
         order.setRewardPoints(rewardPoints);
         order.setDesc(desc);
         order.setOrderStatus(1);
@@ -68,7 +71,7 @@ public class OrderGarServiceImpl implements OrderGarService {
      * 临时申请人创建订单
      */
     @Override
-    public void visitCreateOrder(MultipartFile[] files, double lng, double lat,Integer rewardPoints,String desc,Integer visitorId) throws Exception{
+    public void visitCreateOrder(MultipartFile[] files, double lng, double lat, String area, Integer rewardPoints,String desc,Integer visitorId) throws Exception{
         //上传图片,返回集合ids
         ResponseDTO responseDTO = fileService.batchUpload(files);
         ArrayList<String> fileId = (ArrayList)responseDTO.getData();
@@ -78,6 +81,7 @@ public class OrderGarServiceImpl implements OrderGarService {
         order.setFileInfoId(ids);
         order.setLng(lng);
         order.setLat(lat);
+        order.setArea(area);
         order.setRewardPoints(rewardPoints);
         order.setDesc(desc);
         order.setOrderStatus(0);
@@ -154,8 +158,8 @@ public class OrderGarServiceImpl implements OrderGarService {
     }
 
     @Override
-    public List<OrderGar> queryOrderGarList() {
-        return orderDao.findAll();
+    public Page<OrderGar> queryOrderGarList() {
+        return orderDao.findAll(PageRequest.of(0, 1, Sort.by(Sort.Direction.ASC, "createTime")));
     }
 
 

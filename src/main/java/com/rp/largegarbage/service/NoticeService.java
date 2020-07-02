@@ -15,9 +15,10 @@ public interface NoticeService {
     /**
      * 公告列表(倒序)
      */
-    public List<Notice> queryNoticeList();
+    List<Notice> queryNoticeList();
+
     /**
      * 公告详情
      */
-    public Notice queryNotice(Integer noticeId);
+    Notice queryNotice(Integer noticeId);
 }
