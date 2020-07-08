@@ -1,8 +1,11 @@
 package com.rp.largegarbage;
 
+import com.alibaba.fastjson.JSONObject;
+import com.rp.largegarbage.dao.CarDao;
 import com.rp.largegarbage.dao.OrderGarDao;
 import com.rp.largegarbage.dao.RoleDao;
 import com.rp.largegarbage.dao.UserDao;
+import com.rp.largegarbage.entity.Car;
 import com.rp.largegarbage.entity.Role;
 import com.rp.largegarbage.entity.User;
 import com.rp.largegarbage.redis.RedisUtil;
@@ -28,14 +31,16 @@ class LargegarbageApplicationTests {
 	@Autowired
 	private OrderGarDao orderDao;
 
-	@Autowired
-	private MyClientSocket clientSocket;
+
 
 	@Resource
 	private RedisTemplate<Object, Object> redisTemplate;
 
 	@Autowired
 	private RedisUtil redisUtil;
+
+	@Autowired
+	CarDao carDao;
 
 	@Transactional
 	@Rollback(false)
@@ -91,55 +96,86 @@ class LargegarbageApplicationTests {
 		//ResponseDTO upload = fileUtil.upload(file);
 	}
 
-	@Test
-	public void testGPS() {
-		String jsonLogin = "{\n" +
-				"    \"header\": {\"cmd\": \"1000\"},\n" +
-				"    \"body\": {\n" +
-				"        \"username\": \"zcxt1\",\n" +
-				"        \"password\": \"000000\",\n" +
-				"        \"ver\": \"\",\n" +
-				"        \"type\": \"\",\n" +
-				"        \"mode\": \"\"\n" +
-				"    }\n" +
-				"}";
-		String jsonLogout = "{\n" +
-				"    \"header\": {\"cmd\": \"1001\"},\n" +
-				"    \"body\": {\"data\": \"\"}\n" +
-				"}";
-		String heartBeats = "{\n" +
-				"\t\"header\": {\n" +
-				"\t\t\"cmd\": \"1002\"\n" +
-				"\t},\n" +
-				"\t\"body\": {\n" +
-				"\t\t\"result\": \"\"\n" +
-				"\t}\n" +
-				"}";
-		//客户端向车载终端发送车机命令
-		String Instructions = "{\n" +
-				"    \"header\": {\"cmd\": \"1003\"},\n" +
-				"    \"body\": {\"msg\": \"<cmd>  <id>   7000  </id>  <param>   180  </param>  <param>   10  </param>  </cmd>\"}\n" +
-				"}";
-		//请求分组
-		String queryGroup = "{\n" +
-				"    \"header\": {\"cmd\": \"1008\"},\n" +
-				"    \"body\": {\"client\": \"true\"}\n" +
-				"}";
-		//请求分组下的车辆数据
-		String queryGroupCar = "{\n" +
-				"    \"header\": {\"cmd\": \"1010\"},\n" +
-				"    \"body\": {\"groupid\": \"1\"}\n" +
-				"}";
 
-		String json = "{\n" +
-				"  \"header\": {\"cmd\": \"1000\"},\n" +
-				"  \"body\": {\n" +
-				"    \"username\": \"zcxt1\",\n" +
-				"    \"password\": \"000000\"\n" +
-				"  }\n" +
-				"}";
-		clientSocket.executeSocket(json);
+	@Test
+	void testJson(){
+		String sJSON = "{ \n" +
+				"\"header\": \n" +
+				"{ \n" +
+				" \"cmd\":\"1001\" \n" +
+				"}, \n" +
+				"\"body\": \n" +
+				"{ \n" +
+				" \"data\":\"\" \n" +
+				"} \n" +
+				"} ";
+		JSONObject jsonObject = JSONObject.parseObject(sJSON);
+		//解析 header body
+		String header = jsonObject.get("header").toString();
+		String body = jsonObject.get("body").toString();
+		JSONObject oHeader = JSONObject.parseObject(header);
+		String cmd = oHeader.get("cmd").toString();
+		//JSONObject oBody = JSONObject.parseObject(body);
+		System.out.println(cmd);
+		System.out.println(body);
 	}
 
+	@Test
+	void saveCar() {
+		Car car = new Car();
+		car.setCarCode("京78GUB7");
+		car.setLng(7.567856);
+		car.setLat(89.451834);
+		car.setVeo("24");
+		car.setDir("212");
+		Car save = carDao.saveAndFlush(car);
+	}
 
+	@Test
+	void doParseResultJson(){
+		String tmpData = "{ \n" +
+				"\"header\": \n" +
+				"{ \n" +
+				" \"cmd\":\"1001\" \n" +
+				"}, \n" +
+				"\"body\": \n" +
+				"{ \n" +
+				" \"data\":\"\" \n" +
+				"}}{ \n" +
+				"\"header\": \n" +
+				"{ \n" +
+				" \"cmd\":\"1001\" \n" +
+				"}, \n" +
+				"\"body\": \n" +
+				"{ \n" +
+				" \"data\":\"\" \n" +
+				"}}  ";
+		Boolean bHasJSON = tmpData.contains("{") && tmpData.contains("}}");
+		//在前面，则解析，解析失败，则继续找下一个"}"
+		//解析成功，则进行业务处理
+		//处理完成，则对剩余部分递归解析，直到全部解析完成（此项一般用不到，仅适用于一次发两个以上的JSON串才需要，
+		//每次只传一个JSON串的情况下，是不需要的
+		int idxStart = tmpData.indexOf("{");
+		int idxEnd = 0;
+		while (tmpData.contains("}}")) {
+			idxEnd = tmpData.indexOf("}}") + 2;
+			System.out.println("{}=>" + idxStart + "--" + idxEnd);
+			if (idxStart >= idxEnd) {
+				continue;// 找下一个 "}"
+			}
+			String sJSON = tmpData.substring(idxStart, idxEnd);
+			System.out.println("解析 JSON ...." + sJSON);
+			//解析成功，则说明结束，否则抛出异常，继续接收
+			JSONObject jsonObject = JSONObject.parseObject(sJSON);
+			System.out.println(jsonObject.toJSONString());
+			tmpData = tmpData.substring(idxEnd); //剩余未解析部分
+			idxEnd = 0; //复位
+			if (tmpData.contains("{") && tmpData.contains("}}")) {
+				//tmpData = doParseResultJson(tmpData, "");
+				System.out.println(jsonObject.toJSONString());
+				break;
+			}
+		}
+
+	}
 }

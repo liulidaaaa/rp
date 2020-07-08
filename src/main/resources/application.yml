@@ -6,9 +6,9 @@ server:
       enabled: true
 spring:
   datasource:
-    url: jdbc:mysql://192.168.1.35:3306/rp_garbage?characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/rp_garbage?characterEncoding=UTF-8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
-    password: Runpu2018
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   jpa:
@@ -47,3 +47,8 @@ largegabage:
   file:
     path: E:/rp/src/main/resources/static/upload/images
     extension: .gif,.jpeg,.png,.jpg,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf,.txt,.rar,.tif
+channel:
+  id: 1
+  netty:
+    server:
+      port: 8888

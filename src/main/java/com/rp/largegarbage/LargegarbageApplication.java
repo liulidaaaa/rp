@@ -1,27 +1,48 @@
 package com.rp.largegarbage;
 
+import com.rp.largegarbage.netty.NettyClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import javax.servlet.MultipartConfigElement;
 
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.rp.largegarbage.dao")
-public class LargegarbageApplication {
+public class LargegarbageApplication implements CommandLineRunner {
+
+    /*@Autowired
+    private NettyServer nettyServer;*/
+
+    @Autowired
+    private NettyClient nettyClient;
+
+    /** logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(LargegarbageApplication.class);
+
+    /*@Override
+    public void run(String...strings) throws Exception {
+        InetSocketAddress address = new InetSocketAddress(DefaultConstants.SOCKET_IP, DefaultConstants.SOCKET_PORT);
+        LOGGER.info("netty服务器启动地址： "+ DefaultConstants.SOCKET_IP);
+        nettyServer.start(address);
+    }*/
+    @Override
+    public void run(String...strings) throws Exception {
+        new Thread(new NettyClient()).start();
+        LOGGER.info("netty客户端启动。。。");
+    }
+
     /**
      * SpringBoot添加跨域设置
      */

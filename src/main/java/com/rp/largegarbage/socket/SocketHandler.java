@@ -8,9 +8,8 @@ package com.rp.largegarbage.socket;
  * @Date 2020/6/29 13:45
  */
 import lombok.extern.slf4j.Slf4j;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.net.Socket;
 
 import static com.rp.largegarbage.socket.SocketPool.add;
@@ -48,8 +47,11 @@ public class SocketHandler{
      */
     public static void sendMessage(ClientSocket clientSocket, String message){
         try {
-            clientSocket.getOutputStream().write(message.getBytes("utf-8"));
+            //clientSocket.getOutputStream().write(message.getBytes("utf-8"));
             //clientSocket.getOutputStream().writeUTF(message);
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), "UTF-8"));
+            printWriter.print(message);
+            printWriter.flush();
         } catch (IOException e) {
             log.error("发送信息异常：{}", e);
             close(clientSocket);
@@ -62,11 +64,22 @@ public class SocketHandler{
      * @return
      */
     public static String onMessage(ClientSocket clientSocket){
-        byte[] bytes = new byte[1024];
+        //byte[] bytes = new byte[1024];
         try {
-            clientSocket.getInputStream().read(bytes);
-            String msg = new String(bytes, "utf-8");
-            return msg;
+            //clientSocket.getInputStream().read(bytes);
+            //String msg = new String(bytes, "utf-8");
+            // 读Sock里面的数据
+            InputStream inputStream = clientSocket.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);//缓冲区
+            String info = "";
+            String temp = null;//临时变量
+            while (true) {
+                if (!((temp = bufferedReader.readLine()) != null)) break;
+                info += temp;
+                System.out.println("客户端接收服务端发送信息：" + info);
+            }
+            return info;
         } catch (IOException e) {
             e.printStackTrace();
             close(clientSocket);

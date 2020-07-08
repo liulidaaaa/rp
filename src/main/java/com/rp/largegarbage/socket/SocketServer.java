@@ -12,6 +12,8 @@ package com.rp.largegarbage.socket;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -34,6 +36,8 @@ public class SocketServer {
     private boolean started;
     private ServerSocket serverSocket;
     private ExecutorService executorService = Executors.newCachedThreadPool();
+    private static final Logger LOGGER = LoggerFactory.getLogger(SocketServer.class);
+
 
     public static void main(String[] args){
         new SocketServer().start(8068);
@@ -65,7 +69,33 @@ public class SocketServer {
                 log.info("客户端已连接，其Key值为：{}", register.getKey());
                 /*List<User> list = userService.queryEntityListAll();
                 SocketHandler.sendMessage(register, JSONUtil.toJson(list));*/
-                SocketHandler.sendMessage(register, "{'from server':'hello client'}");
+                SocketHandler.sendMessage(register,
+                        //服务器下发登陆成功
+                        /*"{ \n" +
+                        "\"header\": \n" +
+                        "{ \n" +
+                        " \"cmd\":\"8000\" \n" +
+                        "}, \n" +
+                        "\"body\": \n" +
+                        "{ \n" +
+                        " \"cmd\":\"1000\", \n" +
+                        " \"result\":\"success\" \n" +
+                        "} \n" +
+                        "} ");*/
+                        //服务器向客户端下发用户的客户、分组数据
+                        "{ \n" +
+                                "\"header\": \n" +
+                                "{ \n" +
+                                " \"cmd\":\"1009\" \n" +
+                                "}, \n" +
+                                "\"body\": \n" +
+                                "{ \n" +
+                                " \"groupid\":\"\", \n" +
+                                " \"relation\":\"\", \n" +
+                                " \"customer\":\"\", \n" +
+                                " \"goupname\":\"\" \n" +
+                                "} \n" +
+                                "} ");
 
                 if (register != null){
                     executorService.submit(register);
