@@ -1,9 +1,8 @@
 package com.rp.largegarbage;
 
-import com.rp.largegarbage.netty.NettyClient;
+import com.rp.largegarbage.socket.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +14,8 @@ import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
 import javax.servlet.MultipartConfigElement;
 
 
@@ -25,8 +26,8 @@ public class LargegarbageApplication implements CommandLineRunner {
     /*@Autowired
     private NettyServer nettyServer;*/
 
-    @Autowired
-    private NettyClient nettyClient;
+    /*@Autowired
+    private NettyClient nettyClient;*/
 
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(LargegarbageApplication.class);
@@ -37,10 +38,15 @@ public class LargegarbageApplication implements CommandLineRunner {
         LOGGER.info("netty服务器启动地址： "+ DefaultConstants.SOCKET_IP);
         nettyServer.start(address);
     }*/
-    @Override
+    /*@Override
     public void run(String...strings) throws Exception {
         new Thread(new NettyClient()).start();
         LOGGER.info("netty客户端启动。。。");
+    }*/
+    @Override
+    public void run(String...strings) throws Exception {
+        //new Client("119.57.53.254",1502).start();
+        LOGGER.info("socket客户端启动。。。");
     }
 
     /**
@@ -59,6 +65,7 @@ public class LargegarbageApplication implements CommandLineRunner {
                     .allowCredentials(true);
         }
     }
+
 
     @Bean
     public MultipartConfigElement multipartConfigElement() {

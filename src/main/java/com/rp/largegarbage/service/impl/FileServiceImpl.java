@@ -1,10 +1,10 @@
 package com.rp.largegarbage.service.impl;
 
+import com.rp.largegarbage.config.GlobalProperties;
 import com.rp.largegarbage.dao.FileInfoDao;
 import com.rp.largegarbage.dto.ResponseDTO;
 import com.rp.largegarbage.entity.FileInfo;
 import com.rp.largegarbage.service.FileService;
-import com.rp.largegarbage.shiro.GlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

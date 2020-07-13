@@ -100,14 +100,21 @@ public class OrderGarServiceImpl implements OrderGarService {
     }
 
     @Override
-    public void distributeOrder(Integer orderId, Integer dispatcher, Integer driver) {
+    public void distributeOrder(Integer orderId, Integer taskId, Integer dispatcher, Integer driver) {
         Optional<OrderGar> byId = orderDao.findById(orderId);
         OrderGar order = byId.get();
         order.setDispatcher(dispatcher);
         order.setDriver(driver);
+        //order.setTaskId(taskId);
         //更新垃圾订单状态为已指派
         order.setOrderStatus(2);
         orderDao.save(order);
+    }
+
+    @Override
+    public List<OrderGar> orderList(Integer taskId) {
+        //根据任务编号查询订单
+        return orderDao.findByTaskId(taskId);
     }
 
     @Override

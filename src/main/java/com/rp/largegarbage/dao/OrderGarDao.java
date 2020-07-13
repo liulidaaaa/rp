@@ -1,6 +1,8 @@
 package com.rp.largegarbage.dao;
 
 import com.rp.largegarbage.entity.OrderGar;
+import com.rp.largegarbage.entity.TaskGar;
+import com.rp.largegarbage.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -30,5 +32,7 @@ public interface OrderGarDao extends JpaRepository<OrderGar,Integer>, JpaSpecifi
     @Modifying
     @Query(value = "update order_gar o set o.status = 1 where o.order_id in :ids", nativeQuery = true)
     void deleteByIds(@Param(value = "ids") List<Integer> ids);
+    @Query(value = "select * from order_gar u where u.task_id=?1", nativeQuery = true)
+    List<OrderGar> findByTaskId(Integer taskId);
 
 }

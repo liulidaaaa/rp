@@ -44,8 +44,8 @@ public class OrderGar extends BaseEntity implements Serializable {
     @Column(name = "reward_points", columnDefinition = "int(10) COMMENT '奖励积分'")
     private Integer rewardPoints;
 
-    //订单状态： 0-新订单 1-已确认 2-已指派 3-已接单 4-已消单'
-    @Column(name = "order_status", columnDefinition = "int(10) COMMENT '订单状态： 订单状态： 0-新订单 1-已确认 2-已指派 3-已接单 4-已消单'")
+    //订单状态： 0-新订单 1-已确认 2-已指派 3-已接单 4-已消单 5-申请取消 6-已取消'
+    @Column(name = "order_status", columnDefinition = "int(10) COMMENT '订单状态： 订单状态： 0-新订单 1-已确认 2-已指派 3-已接单 4-已消单 5-申请取消 6-已取消'")
     private Integer orderStatus;
     //临时申请人id
     @Column(name = "visitor", columnDefinition = "int(11) COMMENT '临时申请人id'")
@@ -88,6 +88,31 @@ public class OrderGar extends BaseEntity implements Serializable {
     //@NotEmpty(message="图片不能为空")
     @Column(name = "file_info_id_dri",nullable = true,columnDefinition = "varchar(128) COMMENT '司机上传照片ids'")
     private String fileInfoIdDri;
+    //任务编号（外键）
+    @Column(name = "task_id", nullable = true, columnDefinition = "int(11) COMMENT '任务编号（外键）'")
+    private Integer taskId;
+    //可选属性optional=false,表示taskGar不能为空。删除订单，不影响任务
+
+    /*@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)
+    //设置在order_gar表中的关联字段(外键)
+    @JoinColumn(name="task_id")*/
+    /*@ManyToOne
+    @JoinColumn(name="task_id")*/
+    /*@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_id")*/
+    //private TaskGar taskGar;
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public String getFileInfoIdDri() {
+        return fileInfoIdDri;
+    }
+
+    public void setFileInfoIdDri(String fileInfoIdDri) {
+        this.fileInfoIdDri = fileInfoIdDri;
+    }
 
     public void setAmount(Integer amount) {
         this.amount = amount;
@@ -237,4 +262,8 @@ public class OrderGar extends BaseEntity implements Serializable {
     public void setDescDri(String descDri) {
         this.descDri = descDri;
     }
+
+
+
+
 }

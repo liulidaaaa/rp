@@ -29,11 +29,15 @@ public interface OrderGarService {
     /**
      * 后台调度人员指派订单
      */
-    void distributeOrder(Integer orderId, Integer dispatcher, Integer driver);
+    void distributeOrder(Integer orderId,Integer taskId, Integer dispatcher, Integer driver);
+    /**
+     * 查看任务所含订单
+     */
+    List<OrderGar> orderList(Integer taskId);
     /**
      * 移动端司机接单
      */
-    void takingOrder(Integer orderId,String carCode) ;
+    void takingOrder(Integer orderId,String carCode);
     /**
      * 移动端司机消单
      */
@@ -43,7 +47,7 @@ public interface OrderGarService {
      */
     void cancelOrder(Integer orderId);
     /**
-     * 订单查询
+     * PC后台订单查询
      */
     Page<OrderGar> queryOrderGarList();
 

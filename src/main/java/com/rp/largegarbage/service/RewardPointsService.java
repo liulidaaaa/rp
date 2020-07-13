@@ -13,9 +13,9 @@ public interface RewardPointsService {
     /**
      * 我的积分列表
      */
-    public Map<String,Object> queryMyRewardPoints(Integer userId);
+    Map<String,Object> queryMyRewardPoints(Integer userId);
     /**
      * 积分规则
      */
-    public String RewardRule();
+    String RewardRule();
 }

@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name="notice")
-public class Notice  extends BaseEntity implements Serializable {
+public class Notice extends BaseEntity implements Serializable {
     //编号
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
