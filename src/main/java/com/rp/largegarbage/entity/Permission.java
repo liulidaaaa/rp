@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 /**
  * @Description
@@ -36,7 +38,7 @@ public class Permission extends BaseEntity implements Serializable {
             ,joinColumns = {@JoinColumn(name = "permission_id",referencedColumnName = "permission_id")}
             //inverseJoinColumns，对方对象在中间表的外键
             ,inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "role_id")})
-    private Set<User> users=new HashSet<User>();
+    private List<User> users=new ArrayList<User>();
 
     public Integer getPermissionId() {
         return permissionId;
@@ -62,11 +64,11 @@ public class Permission extends BaseEntity implements Serializable {
         this.permission = permission;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 

@@ -5,9 +5,12 @@ import com.rp.largegarbage.service.TaskGarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -30,18 +33,23 @@ public class TaskGarController {
      * 调度人员PC后台创建任务
      */
     @PostMapping("createTask")
-    public ResponseDTO createTask(String title, Integer driver, Date cutoffTime) {
-        taskGarService.createTask(title, driver, cutoffTime);
-        return ResponseDTO.buildSuccess("success");
+    public ResponseDTO createTask(String title, String orderGars,  Integer driver, Integer dispatcher, String cutoffTime) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm");
+        Date parse = sdf.parse(cutoffTime);
+        return ResponseDTO.buildSuccess(taskGarService.createTask(title, orderGars, driver, dispatcher, parse), "任务创建成功");
     }
 
     /**
      * 司机查看任务列表
+     * 新任务 -0,进行中 -1,已完成 -2
      */
-    @PostMapping("taskList")
-    public ResponseDTO taskList(Integer driver, Integer taskStatus){
-        return ResponseDTO.buildSuccess(taskGarService.taskList(driver, taskStatus));
+    @GetMapping("taskList")
+    public ResponseDTO taskList(Integer driver,Integer taskStatus){
+        return ResponseDTO.buildSuccess(taskGarService.taskList(driver), taskStatus);
     }
+
+
+
     /**
      * 司机接受任务
      */

@@ -14,6 +14,7 @@ import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.MultipartConfigElement;
@@ -21,7 +22,7 @@ import javax.servlet.MultipartConfigElement;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.rp.largegarbage.dao")
-public class LargegarbageApplication implements CommandLineRunner {
+public class LargegarbageApplication extends WebMvcConfigurerAdapter implements CommandLineRunner {
 
     /*@Autowired
     private NettyServer nettyServer;*/
@@ -29,7 +30,9 @@ public class LargegarbageApplication implements CommandLineRunner {
     /*@Autowired
     private NettyClient nettyClient;*/
 
-    /** logger */
+    /**
+     * logger
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(LargegarbageApplication.class);
 
     /*@Override
@@ -44,7 +47,7 @@ public class LargegarbageApplication implements CommandLineRunner {
         LOGGER.info("netty客户端启动。。。");
     }*/
     @Override
-    public void run(String...strings) throws Exception {
+    public void run(String... strings) throws Exception {
         //new Client("119.57.53.254",1502).start();
         LOGGER.info("socket客户端启动。。。");
     }
@@ -52,18 +55,13 @@ public class LargegarbageApplication implements CommandLineRunner {
     /**
      * SpringBoot添加跨域设置
      */
-    @Configuration
-    @EnableWebMvc
-    public class WebMvcConfg implements WebMvcConfigurer {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            WebMvcConfigurer.super.addCorsMappings(registry);
-            registry.addMapping("/**")//需要跨域访问的Map路径
-                    .allowedOrigins("http://localhost:4200")//允许跨域访问的ip及端口
-                    .allowedHeaders("*")//允许跨域访问的Headers内容
-                    .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")//允许跨域访问的方法，OPTIONS必须设置Shiro中用到
-                    .allowCredentials(true);
-        }
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowCredentials(true)
+                .allowedHeaders("*")
+                .allowedOrigins("*")
+                .allowedMethods("*");
     }
 
 
@@ -79,6 +77,7 @@ public class LargegarbageApplication implements CommandLineRunner {
 
     /**
      * SpringBoot主方法
+     *
      * @param args
      */
     public static void main(String[] args) {

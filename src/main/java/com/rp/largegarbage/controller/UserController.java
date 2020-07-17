@@ -3,17 +3,14 @@ package com.rp.largegarbage.controller;
 import com.rp.largegarbage.dto.ResponseDTO;
 import com.rp.largegarbage.entity.User;
 import com.rp.largegarbage.service.UserService;
-import com.rp.largegarbage.service.impl.NoticeServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * @Description
@@ -24,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @RequestMapping("user")
+@CrossOrigin
 public class UserController {
     /**
      * logger
@@ -34,36 +32,16 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 临时申请人注册并登录
+     * 登录
+     * 临时申请人注册并登录/发起人登录/司机登录/管理员登录
+     * type: 2-临时申请人，3-发起人，4-司机，5-管理员
      */
-    @PostMapping("visitorSignInAndRegister")
-    public ResponseDTO visitorSignInAndRegister(Integer phoneNo, String captcha, Integer idcard, String username, MultipartFile file, String sessionId) throws Exception {
-        return ResponseDTO.buildSuccess(userService.visitorSignInAndRegister(phoneNo, captcha, idcard, username, file, sessionId));
-    }
-
-    /**
-     * 发起人登录
-     */
-    @PostMapping("initiatorSignIn")
-    public ResponseDTO initiatorSignIn(Integer phoneNo, String captcha) {
-        return ResponseDTO.buildSuccess(userService.initiatorSignIn(phoneNo, captcha));
-    }
-
-    /**
-     * 司机登录
-     */
-    @PostMapping("driverSignIn")
-    public ResponseDTO driverSignIn(Integer phoneNo, String captcha) {
-
-        return ResponseDTO.buildSuccess(userService.driverSignIn(phoneNo, captcha));
-    }
-
-    /**
-     * 管理员登录
-     */
-    @PostMapping("adminSignIn")
-    public ResponseDTO adminSignIn(Integer phoneNo, String captcha) {
-        return ResponseDTO.buildSuccess(userService.adminSignIn(phoneNo, captcha));
+    @PostMapping("signInAndRegister")
+    public ResponseDTO signInAndRegister(Integer type, Long phoneNo, String captcha, Long idcard, String username, MultipartFile file, String sessionId) throws Exception {
+        Boolean aBoolean = userService.signInAndRegister(type, phoneNo, captcha, idcard, username, file, sessionId);
+        if (aBoolean) {
+            return ResponseDTO.buildSuccess(userService.queryUserInfo(phoneNo),"登陆成功");
+        }else {return ResponseDTO.buildSuccess("登录信息不正确，请重新登陆");}
     }
 
     /**
@@ -73,7 +51,7 @@ public class UserController {
      * @return
      */
     @PostMapping("editUserInfo")
-    public ResponseDTO editUserInfo(User user) {
+    public ResponseDTO editUserInfo(@RequestBody User user) {
         return ResponseDTO.buildSuccess(userService.editUserInfo(user));
     }
 
@@ -97,8 +75,7 @@ public class UserController {
      * 更换手机号码
      */
     @PostMapping("changePhoneNo")
-    public ResponseDTO changePhoneNo(Integer userId, Integer phoneNoOld, Integer phoneNoNew, String verificationCode) {
+    public ResponseDTO changePhoneNo(Integer userId, Long phoneNoOld, Long phoneNoNew, String verificationCode) {
         return ResponseDTO.buildSuccess(userService.changePhoneNo(userId, phoneNoOld, phoneNoNew, verificationCode));
     }
-
 }

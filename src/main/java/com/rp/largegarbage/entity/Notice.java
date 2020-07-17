@@ -21,7 +21,7 @@ public class Notice extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "notice_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private Integer noticeId ;
+    private Integer noticeId;
     //公告标题
     @Column(name = "title",nullable = false,columnDefinition = "varchar(127) COMMENT '公告标题'")
     private String title;

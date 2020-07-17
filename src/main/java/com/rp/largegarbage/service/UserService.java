@@ -15,24 +15,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface UserService {
     /**
-     * 临时申请人注册并登录
+     * 临时申请人注册并登录/发起人登录/司机登录/管理员登录
+     * type: 2-临时申请人，3-发起人，4-司机，5-管理员
      */
-    Boolean visitorSignInAndRegister(Integer phoneNo, String captcha, Integer idcard, String username, MultipartFile file, String sessionId) throws Exception;
+    Boolean signInAndRegister(Integer type, Long phoneNo, String captcha, Long idcard, String username, MultipartFile file, String sessionId) throws Exception;
 
     /**
-     * 发起人登录
+     * 查询用户信息
+     *
+     * @param phoneNo
+     * @return
      */
-    Boolean initiatorSignIn(Integer phoneNo, String captcha);
-
-    /**
-     * 司机登录
-     */
-    Boolean driverSignIn(Integer phoneNo, String captcha);
-
-    /**
-     * 管理员登录
-     */
-    Boolean adminSignIn(Integer phoneNo, String captcha);
+    User queryUserInfo(Long phoneNo);
 
     /**
      * 编辑用户信息
@@ -54,7 +48,7 @@ public interface UserService {
     /**
      * 更换手机号码
      */
-    Boolean changePhoneNo(Integer userId, Integer phoneNoOld, Integer phoneNoNew, String verificationCode) ;
+    Boolean changePhoneNo(Integer userId, Long phoneNoOld, Long phoneNoNew, String verificationCode) ;
 
     /**
      * 各种角色列表（发起人/司机/管理员）列表

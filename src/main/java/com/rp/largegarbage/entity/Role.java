@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,16 +47,17 @@ public class Role extends BaseEntity implements Serializable {
     @JoinTable(name= "role_permission"
             ,joinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "role_id")}
             ,inverseJoinColumns = {@JoinColumn(name = "permission_id",referencedColumnName = "permission_id")})
-    private Set<Permission> permissions = new HashSet<Permission>();
+    private List<Permission> permissions = new ArrayList<>();
 
     @Override
     public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                ", users=" + users +
-                ", permissions=" + permissions +
-                '}';
+        return "{\"Role\":"
+//                + super.toString()
+                + ", \"roleId\":\"" + roleId + "\""
+                + ", \"roleName\":\"" + roleName + "\""
+ //               + ", \"users\":" + users
+                + ", \"permissions\":" + permissions
+                + "}";
     }
 
     public Integer getRoleId() {
@@ -82,11 +84,11 @@ public class Role extends BaseEntity implements Serializable {
         this.users = users;
     }
 
-    public Set<Permission> getPermissions() {
+    public List<Permission> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<Permission> permissions) {
+    public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
     }
 

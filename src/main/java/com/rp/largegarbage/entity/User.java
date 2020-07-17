@@ -1,15 +1,13 @@
 package com.rp.largegarbage.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 /**
  * @Description
@@ -44,7 +42,7 @@ public class User extends BaseEntity implements Serializable {
             ,joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "user_id")}
             //inverseJoinColumns，对方对象在中间表的外键
             ,inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "role_id")})
-    private Set<Role> roles=new HashSet<Role>();
+    private List<Role> roles=new ArrayList<Role>();
 
     //真实姓名
     @Column(name = "real_name",nullable = true,columnDefinition = "varchar(50) COMMENT '真实姓名'")
@@ -55,8 +53,8 @@ public class User extends BaseEntity implements Serializable {
     //联系电话
     @JsonProperty("phoneNo")//account
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Column(name = "phoneNo", columnDefinition = "int(14) COMMENT '联系电话'")
-    private Integer phoneNo;
+    @Column(name = "phoneNo", columnDefinition = "bigint(14) COMMENT '联系电话'")
+    private Long phoneNo;
     //常用地址
     @Column(name = "address", columnDefinition = "varchar(500) COMMENT '常用地址'")
     private String address;
@@ -66,8 +64,8 @@ public class User extends BaseEntity implements Serializable {
     //身份证号
     //@JsonIgnore
     //@Size(min=12,max=20,message="身份证号的长度应该在12和20之间")
-    @Column(name = "idcard", columnDefinition = "int(30) COMMENT '身份证号'")
-    private Integer idCard;
+    @Column(name = "idcard", columnDefinition = "bigint(30) COMMENT '身份证号'")
+    private Long idCard;
 
     //头像编号
     @Column(name = "header_id", columnDefinition = "int(11) COMMENT '头像编号'")
@@ -84,17 +82,18 @@ public class User extends BaseEntity implements Serializable {
     @Override
     public String toString() {
         return "{\"User\":"
-                + super.toString()
+//                + super.toString()
                 + ", \"userId\":\"" + userId + "\""
                 + ", \"username\":\"" + username + "\""
                 + ", \"password\":\"" + password + "\""
-                + ", \"roles\":" + roles
+ //               + ", \"roles\":" + roles
                 + ", \"realName\":\"" + realName + "\""
                 + ", \"gender\":\"" + gender + "\""
                 + ", \"phoneNo\":\"" + phoneNo + "\""
                 + ", \"address\":\"" + address + "\""
                 + ", \"rewardPoints\":\"" + rewardPoints + "\""
                 + ", \"idCard\":\"" + idCard + "\""
+                + ", \"headerId\":\"" + headerId + "\""
                 + "}";
     }
 
@@ -122,14 +121,6 @@ public class User extends BaseEntity implements Serializable {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
     public String getRealName() {
         return realName;
     }
@@ -146,12 +137,20 @@ public class User extends BaseEntity implements Serializable {
         this.gender = gender;
     }
 
-    public Integer getPhoneNo() {
+    public Long getPhoneNo() {
         return phoneNo;
     }
 
-    public void setPhoneNo(Integer phoneNo) {
+    public void setPhoneNo(Long phoneNo) {
         this.phoneNo = phoneNo;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public String getAddress() {
@@ -170,17 +169,17 @@ public class User extends BaseEntity implements Serializable {
         this.rewardPoints = rewardPoints;
     }
 
-    public Integer getIdCard() {
+    public Long getIdCard() {
         return idCard;
     }
 
-    public void setIdCard(Integer idCard) {
+    public void setIdCard(Long idCard) {
         this.idCard = idCard;
     }
 
     public User() {
     }
-    public User(Integer userId, Set<Role> roles) {
+    public User(Integer userId, List<Role> roles) {
         this.userId = userId;
         this.roles = roles;
     }

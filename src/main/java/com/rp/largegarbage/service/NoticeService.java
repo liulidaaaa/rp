@@ -13,6 +13,10 @@ import java.util.List;
  */
 public interface NoticeService {
     /**
+     * 创建通知公告
+     */
+    Notice createNotice(Notice notice);
+    /**
      * 公告列表(倒序)
      */
     List<Notice> queryNoticeList();

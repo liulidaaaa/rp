@@ -17,9 +17,7 @@ import java.util.Date;
 @Data
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
-
     //状态 0有效 1无效
-    //private Integer state;
     @Column(name = "status", columnDefinition = "int(10) COMMENT '状态： 0-有效 1-无效'")
     private Integer status;
     //创建时间

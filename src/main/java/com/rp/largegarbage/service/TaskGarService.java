@@ -17,11 +17,11 @@ public interface TaskGarService {
     /**
      * 调度人员PC后台创建任务
      */
-    void createTask(String title, Integer driver, Date cutoffTime);
+    TaskGar createTask(String title, String orderGars, Integer driver, Integer dispatcher, Date cutoffTime);
     /**
      * 司机查看任务列表
      */
-    List<TaskGar> taskList(Integer driver, Integer taskStatus);
+    Map<String, List<TaskGar>> taskList(Integer driver);
     /**
      * 司机接受任务
      */

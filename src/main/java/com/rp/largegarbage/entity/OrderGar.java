@@ -1,11 +1,13 @@
 package com.rp.largegarbage.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description
@@ -26,20 +28,25 @@ public class OrderGar extends BaseEntity implements Serializable {
     private Integer orderId ;
     //发起人上传垃圾照片ids
     //@NotEmpty(message="图片不能为空")
-    @Column(name = "file_info_id",nullable = false,columnDefinition = "varchar(128) COMMENT '发起人上传垃圾照片ids'")
+    @Column(name = "file_info_id",nullable = true,columnDefinition = "varchar(128) COMMENT '发起人上传垃圾照片ids'")
     private String fileInfoId;
     //垃圾经度
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Column(name = "lng",nullable = false,columnDefinition = "double COMMENT '垃圾经度'")
-    private double lng;
+    @Column(name = "lng",nullable = true,columnDefinition = "double(20) COMMENT '垃圾经度'")
+    private Double lng;
     //垃圾纬度
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Column(name = "lat",nullable = false,columnDefinition = "double COMMENT '垃圾纬度'")
-    private double lat;
+    @Column(name = "lat",nullable = true,columnDefinition = "double(20) COMMENT '垃圾纬度'")
+    private Double lat;
     //发起人描述估量
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Column(name = "desc", nullable = false,columnDefinition = "varchar(500) COMMENT '发起人描述估量'")
-    private String desc;
+    @Column(name = "des", nullable = true,columnDefinition = "varchar(500) COMMENT '发起人描述估量'")
+    private String des;
+    //发起人预约时间
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm",locale="zh",timezone="GMT+8")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Column(name = "appointment_time", nullable = true,columnDefinition = "datetime COMMENT '发起人预约时间'")
+    private Date appointmentTime;
     //积分
     @Column(name = "reward_points", columnDefinition = "int(10) COMMENT '奖励积分'")
     private Integer rewardPoints;
@@ -61,16 +68,16 @@ public class OrderGar extends BaseEntity implements Serializable {
     private Integer driver;
 
     //司机经度
-    @Column(name = "lng_dri",nullable = true,columnDefinition = "double COMMENT '司机经度'")
-    private double lngDri;
+    @Column(name = "lng_dri",nullable = true,columnDefinition = "double(20) COMMENT '司机经度'")
+    private Double lngDri;
     //司机纬度
-    @Column(name = "lat_dri",nullable = true,columnDefinition = "double COMMENT '司机纬度'")
-    private double latDri;
+    @Column(name = "lat_dri",nullable = true,columnDefinition = "double(20) COMMENT '司机纬度'")
+    private Double latDri;
     //司机描述估量
     @Column(name = "desc_dri", nullable = true,columnDefinition = "varchar(500) COMMENT '司机描述估量'")
     private String descDri;
     //订单所在区域
-    @Column(name = "area", nullable = false,columnDefinition = "varchar(127) COMMENT '订单所在区域'")
+    @Column(name = "area", nullable = true,columnDefinition = "varchar(127) COMMENT '订单所在区域'")
     private String area;
     //管理者核实量方
     @Column(name = "amount", nullable = true,columnDefinition = "int(11) COMMENT '管理者核实量方'")
@@ -86,11 +93,18 @@ public class OrderGar extends BaseEntity implements Serializable {
     private Date completeTime;
     //司机上传垃圾照片ids
     //@NotEmpty(message="图片不能为空")
-    @Column(name = "file_info_id_dri",nullable = true,columnDefinition = "varchar(128) COMMENT '司机上传照片ids'")
+    @Column(name = "file_info_id_dri",nullable = true,columnDefinition = "varchar(127) COMMENT '司机上传照片ids'")
     private String fileInfoIdDri;
     //任务编号（外键）
     @Column(name = "task_id", nullable = true, columnDefinition = "int(11) COMMENT '任务编号（外键）'")
     private Integer taskId;
+    //调度给订单备注（特殊情况）
+    @Column(name = "remarks",nullable = true,columnDefinition = "varchar(127) COMMENT '订单备注'")
+    private String remarks;
+    //@Column(name = "phoneNo", columnDefinition = "bigint(14) COMMENT '调度电话'")
+    private Long dispatcherPhoneNo;
+
+    //private List<String> filePaths = new ArrayList<>();
     //可选属性optional=false,表示taskGar不能为空。删除订单，不影响任务
 
     /*@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=true)
@@ -167,28 +181,20 @@ public class OrderGar extends BaseEntity implements Serializable {
         this.fileInfoId = fileInfoId;
     }
 
-    public double getLng() {
+    public Double getLng() {
         return lng;
     }
 
-    public void setLng(double lng) {
+    public void setLng(Double lng) {
         this.lng = lng;
     }
 
-    public double getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
     }
 
     public Integer getRewardPoints() {
@@ -239,19 +245,19 @@ public class OrderGar extends BaseEntity implements Serializable {
         this.dispatcher = dispatcher;
     }
 
-    public double getLngDri() {
+    public Double getLngDri() {
         return lngDri;
     }
 
-    public void setLngDri(double lngDri) {
+    public void setLngDri(Double lngDri) {
         this.lngDri = lngDri;
     }
 
-    public double getLatDri() {
+    public Double getLatDri() {
         return latDri;
     }
 
-    public void setLatDri(double latDri) {
+    public void setLatDri(Double latDri) {
         this.latDri = latDri;
     }
 
@@ -263,7 +269,19 @@ public class OrderGar extends BaseEntity implements Serializable {
         this.descDri = descDri;
     }
 
+    public Integer getTaskId() {
+        return taskId;
+    }
 
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
+    }
 
+    public String getDes() {
+        return des;
+    }
 
+    public void setDes(String des) {
+        this.des = des;
+    }
 }

@@ -1,6 +1,7 @@
 package com.rp.largegarbage.controller;
 
 import com.rp.largegarbage.dto.ResponseDTO;
+import com.rp.largegarbage.entity.OrderGar;
 import com.rp.largegarbage.service.OrderGarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @Description
@@ -28,26 +32,26 @@ public class OrderGarController {
 
     @Autowired
     private OrderGarService orderGarService;
+
+
     /**
-     * 发起人创建订单
+     * 移动端 临时申请人/发起人创建订单
+     * type: 0-临时申请人,1-发起人
      */
-    @PostMapping("initiatorCreateOrder")
-    public ResponseDTO initiatorCreateOrder(MultipartFile[] files, double lng, double lat, String area, Integer rewardPoints, String desc, Integer initiator)throws Exception{
-        orderGarService.initiatorCreateOrder(files,lng,lat,area,rewardPoints,desc,initiator);
-        return ResponseDTO.buildSuccess("success");
+    @PostMapping("initOrder")
+    public ResponseDTO initOrder(Integer type, String appointmentTime, MultipartFile[] files, double lng, double lat, String area, Integer rewardPoints, String desc, Integer userId) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm");
+        Date parse = sdf.parse(appointmentTime);
+        OrderGar orderGar = orderGarService.initOrder(type,parse, files, lng, lat, area, rewardPoints, desc, userId);
+        if (null != orderGar) {
+            return ResponseDTO.buildSuccess(orderGar, "新增成功");
+        }else {
+            return ResponseDTO.buildSuccess(orderGar, "新增失败");
+        }
     }
 
     /**
-     * 移动端临时申请人创建订单
-     */
-    @PostMapping("visitCreateOrder")
-    public ResponseDTO visitCreateOrder(MultipartFile[] files, double lng, double lat, String area, Integer rewardPoints, String desc, Integer visitor) throws Exception {
-        orderGarService.visitCreateOrder(files,lng,lat,area,rewardPoints,desc,visitor);
-        return ResponseDTO.buildSuccess("success");
-    }
-
-    /**
-     * 后台发起人审核确认订单
+     * 后台发起人审核临时申请人创建的订单
      */
     @PostMapping("confirmOrder")
     public ResponseDTO confirmOrder(Integer orderId, Integer initiator) {
@@ -56,12 +60,38 @@ public class OrderGarController {
     }
 
     /**
-     * 后台调度人员指派订单
+     * 后台调度人员指派订单(无用 见任务创建)
      */
-    @PostMapping("distributeOrder")
+    /*@PostMapping("distributeOrder")
     public ResponseDTO distributeOrder(Integer orderId, Integer taskId, Integer dispatcher, Integer driver) {
         orderGarService.distributeOrder(orderId, taskId, dispatcher, driver);
         return ResponseDTO.buildSuccess("success");
+    }*/
+
+    /**
+     * 后台调度人员修改订单信息(给订单添加备注)
+     */
+    @PostMapping("remarkOrder")
+    public ResponseDTO remarkOrder(Integer orderId, String remarks) {
+        orderGarService.remarkOrder(orderId, remarks);
+        return ResponseDTO.buildSuccess("success");
+    }
+
+
+
+    /**
+     * 司机查看任务所含订单
+     */
+    @GetMapping("taskOrders")
+    public ResponseDTO taskOrders(Integer taskId) {
+        return ResponseDTO.buildSuccess(orderGarService.taskOrders(taskId));
+    }
+    /**
+     * 司机查看订单详情
+     */
+    @GetMapping("orderInfo")
+    public ResponseDTO orderInfo(Integer orderId) {
+        return ResponseDTO.buildSuccess(orderGarService.orderInfo(orderId));
     }
 
     /**
@@ -69,8 +99,7 @@ public class OrderGarController {
      */
     @PostMapping("takingOrder")
     public ResponseDTO takingOrder(Integer orderId, String carCode) {
-        orderGarService.takingOrder(orderId, carCode);
-        return ResponseDTO.buildSuccess("success");
+        return ResponseDTO.buildSuccess(orderGarService.takingOrder(orderId, carCode),"录入成功");
     }
 
     /**
@@ -78,19 +107,25 @@ public class OrderGarController {
      */
     @PostMapping("completeOrder")
     public ResponseDTO completeOrder(Integer orderId, MultipartFile[] files, double lng, double lat, String desc, Integer driver) throws Exception {
-        orderGarService.completeOrder(orderId, files, lng, lat, desc, driver);
-        return ResponseDTO.buildSuccess("success");
+        return ResponseDTO.buildSuccess(orderGarService.completeOrder(orderId, files, lng, lat, desc, driver),"消单成功");
     }
 
     /**
-     * 临时申请人/后台发起人取消订单
+     * 临时申请人/后台发起人取消订单/PC管理员批准取消订单
      */
     @PostMapping("cancelOrder")
     public ResponseDTO cancelOrder(Integer orderId) {
         orderGarService.cancelOrder(orderId);
         return ResponseDTO.buildSuccess("success");
     }
-
+    /**
+     * 司机申请取消订单
+     */
+    @PostMapping("excuseCancelOrder")
+    public ResponseDTO excuseCancelOrder(Integer orderId) {
+        orderGarService.excuseCancelOrder(orderId);
+        return ResponseDTO.buildSuccess("success");
+    }
     /**
      * PC订单查询
      */

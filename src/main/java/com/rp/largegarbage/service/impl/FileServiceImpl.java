@@ -71,7 +71,8 @@ public class FileServiceImpl implements FileService {
 
         // 判断文件是否为空
         if (file.isEmpty()) {
-            return new ResponseDTO(-1, "文件为空 ", null);
+            LOGGER.info("文件为空");
+            return new ResponseDTO(-1, 0, null);
         }
         //判断文件是否为空文件
         if (file.getSize() <= 0) {
@@ -115,7 +116,7 @@ public class FileServiceImpl implements FileService {
         // 新增文件数据
         FileInfo save = fileInfoDao.save(sysFileInfo);
         Integer id = save.getFileId();
-        return new ResponseDTO(1,id , "上传成功 ");
+        return new ResponseDTO(1, id.toString() , "上传成功 ");
     }
 
     /**
@@ -129,14 +130,27 @@ public class FileServiceImpl implements FileService {
         if (null == files) {
             return new ResponseDTO(-1, "参数为空 ", null);
         }
-        List<String> ids = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
         for (MultipartFile multipartFile : files) {
             ResponseDTO upload = upload(multipartFile);
-            ids.add((String) upload.getData());
+            sb.append(upload.getData());
+            sb.append(",");
         }
-        return new ResponseDTO(-1,ids , "批量上传成功 ");
+        String ids = sb.toString();
+        ids = ids.substring(0, ids.length() - 1);
+        return new ResponseDTO(-1, ids , "批量上传成功 ");
     }
 
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(1);
+        sb.append(",");
+        sb.append(2);
+        sb.append(",");
+        String ids = sb.toString();
+        ids = ids.substring(0, ids.length() - 1);
+        System.out.println(ids);
+    }
 
 
     /**

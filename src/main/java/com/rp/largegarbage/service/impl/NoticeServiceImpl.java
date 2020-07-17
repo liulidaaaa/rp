@@ -26,9 +26,14 @@ public class NoticeServiceImpl implements NoticeService {
     /** logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(NoticeServiceImpl.class);
 
-
     @Autowired
     private NoticeDao noticeDao;
+
+    @Override
+    public Notice createNotice(Notice notice) {
+        notice.setPv(0);
+        return noticeDao.saveAndFlush(notice);
+    }
 
     @Override
     public List<Notice> queryNoticeList() {

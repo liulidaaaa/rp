@@ -20,4 +20,6 @@ public interface RoleDao extends JpaRepository<Role,Integer>, JpaSpecificationEx
             "where r.role_name=?1", nativeQuery = true)*/
     @Query(value = "select * FROM role r where r.role_name=?1", nativeQuery = true)
     Role findByRoleName(String roleName);
+    @Query(value = "select * FROM role r where r.role_id=?1", nativeQuery = true)
+    Role findByRoleId(Integer roleId);
 }
